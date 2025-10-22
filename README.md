@@ -103,13 +103,89 @@ The goal is to simulate a real-world modernization workflow: migrating a legacy 
 
 ---
 
-## 🪣 Next Steps
-1. Phase 4 – Security hardening + validation (SELinux + firewalld + rpm verify)  
-2. Phase 5 – Sysbench performance benchmark + validation playbook  
-3. Phase 6 – Terraform cloud portability stub + final README narrative  
+## 🔒 Phase 4 — Security Hardening & Validation
+**Purpose:** Validate system integrity and align the Rocky 9 VM with CIQ’s RLC-Hardened standards.
+
+**Steps**
+1. Enforced SELinux and confirmed with `getenforce` → `reports/selinux_status.txt`  
+2. Enabled `firewalld` and verified it’s active → `reports/firewalld_status.txt`  
+3. Ran `rpm -Va --nofiles --noscripts` for package integrity → `reports/rpm_verify.txt`  
+4. Documented findings in `docs/hardening-validation.md`.
+
+**CIQ Alignment**
+- Mirrors CIQ’s **RLC-Hardened** baseline (SELinux, Firewalld, signed package integrity).  
+- Reflects **Lifecycle Validation** by ensuring no unauthorized drift in system binaries.  
+- Ties directly into CIQ’s FIPS 140-3 readiness and compliance posture.  
+
+**Artifacts**
+- `docs/hardening-validation.md`  
+- `reports/selinux_status.txt`  
+- `reports/firewalld_status.txt`  
+- `reports/rpm_verify.txt`
 
 ---
 
-## 🧾 Version Control
-**Current Milestone:**  
-> “Phase 3 Ansible migration simulation completed — demonstrating automated config transfer between CentOS 7 and Rocky 9, aligned with CIQ modernization principles.”
+## 📈 Phase 5 — Benchmark + Validation
+**Purpose:** Measure CPU performance post-migration and confirm no degradation occurred compared to CentOS 7.
+
+**Steps**
+1. Installed Sysbench (`dnf install -y sysbench`).  
+2. Executed `sysbench cpu run` and captured → `reports/sysbench-rocky9.txt`.  
+3. (Optional) Ran the same test on CentOS 7 for comparison → `reports/sysbench-centos7.txt`.  
+4. Documented results in `docs/benchmark-summary.md`.
+
+**CIQ Alignment**
+- Reflects CIQ’s **Lifecycle Validation** testing pipeline — regression and performance validation before image release.  
+- Demonstrates modernization consistency under CIQ’s lifecycle management.  
+
+**Artifacts**
+- `docs/benchmark-summary.md`  
+- `reports/sysbench-rocky9.txt`  
+- `reports/sysbench-centos7.txt` (optional)
+
+---
+
+## ☁️ Phase 6 — Cloud Portability Simulation (Terraform Stub)
+**Purpose:** Illustrate cloud readiness and hybrid consistency using Terraform as a declarative IaC framework.
+
+**Stub Overview**
+- File: `terraform/rocky9_cloud.tf`  
+- Defines AWS provider configuration and a placeholder EC2 instance.  
+- Non-functional (no AMI or credentials) — demonstrates structure only.
+
+**CIQ Alignment**
+- Reflects CIQ’s **Hybrid Consistency** model — Rocky can be deployed and managed identically across on-prem and cloud.  
+- Simulates **Lifecycle Management as Code**, foundational to CIQ’s infrastructure automation approach.  
+
+**Artifacts**
+- `terraform/rocky9_cloud.tf`  
+- `docs/cloud-portability.md`
+
+---
+
+## 🧾 Final Deliverables Summary
+| Phase | Description | Key Artifacts |
+|-------|--------------|----------------|
+| 1 | Legacy CentOS 7 VM | `snapshots/legacy-centos7.xml` |
+| 2 | Rocky 9 Target VM | `snapshots/rocky9-target.xml`, `snapshots/virbr0.xml` |
+| 2A | Prometheus Legacy Workload | `/home/eden/prom-stack/`, Docker Compose configs |
+| 3 | Ansible Migration Simulation | `ansible/playbooks/*.yml`, `docs/migration-summary.md` |
+| 4 | Security Hardening | `reports/*.txt`, `docs/hardening-validation.md` |
+| 5 | Benchmark Validation | `reports/sysbench-*.txt`, `docs/benchmark-summary.md` |
+| 6 | Terraform Cloud Stub | `terraform/rocky9_cloud.tf`, `docs/cloud-portability.md` |
+
+---
+
+## 🎤 Demo Flow (5-Minute Summary)
+1. Show reproducibility (`snapshots/*.xml`).  
+2. Highlight migration automation (`ansible-playbook migrate.yml`).  
+3. Display hardening & validation outputs (`reports/selinux_status.txt`, `firewalld_status.txt`).  
+4. Review benchmark results (`reports/sysbench-rocky9.txt`).  
+5. End with the Terraform stub to illustrate CIQ’s hybrid consistency message.  
+
+---
+
+## 🧠 Key Takeaway
+This lab simulates CIQ’s modernization approach:  
+**Migration → Automation → Security → Lifecycle → Portability.**  
+Rocky Linux delivers the open-source foundation, while CIQ provides the hardened, lifecycle-managed, and hybrid-consistent ecosystem around it.
