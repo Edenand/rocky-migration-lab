@@ -1,0 +1,38 @@
+---
+- name: Package Prometheus workload from legacy
+  hosts: legacy
+  gather_facts: false
+  tasks:
+    - name: Create tarball of Prometheus stack
+      archive:
+        path: /home/edenand/prom-stack/
+        dest: /tmp/prom-stack.tar.gz
+
+    - name: Fetch Prometheus tarball to control node
+      fetch:
+        src: /tmp/prom-stack.tar.gz
+        dest: fetched/
+        flat: yes
+
+- name: Deploy Prometheus workload on Rocky target
+  hosts: rocky9
+  gather_facts: false
+  tasks:
+    - name: Copy Prometheus tarball to target
+      copy:
+        src: fetched/prom-stack.tar.gz
+        dest: /tmp/prom-stack.tar.gz
+        owner: edenand
+        mode: '0644'
+
+    - name: Extract Prometheus stack on Rocky
+      unarchive:
+        src: /tmp/prom-stack.tar.gz
+        dest: /home/edenand/
+        remote_src: yes
+        owner: edenand
+
+    - name: Start Prometheus stack on Rocky
+      shell: |
+        cd /home/edenand/prom-stack
+        docker compose up -d
