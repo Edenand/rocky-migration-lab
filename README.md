@@ -72,8 +72,7 @@ The goal is to simulate a real-world modernization workflow: migrating a legacy 
 - Node Exporter metrics available at [http://192.168.122.87:9100/metrics](http://192.168.122.87:9100/metrics)  
 - Verified Docker daemon active and containers listed with `docker ps`  
 
-**Snapshot Created**
-
+**Snapshot Created**  
 
 **Artifacts Captured**
 - `snapshots/legacy-centos7.xml` (VM definition)  
@@ -83,17 +82,34 @@ The goal is to simulate a real-world modernization workflow: migrating a legacy 
 
 ---
 
-## 🪣 Phase 3 — Migration Simulation (Next Step)
-The next phase will recreate the Prometheus stack on the Rocky 9 target VM to demonstrate a successful modernization.  
-Planned steps:
-1. Copy the `prom-stack/` directory from CentOS 7 to Rocky 9.  
-2. Install Docker + Compose on Rocky 9.  
-3. Deploy identical containers and validate service availability (9090 / 9100).  
-4. Capture snapshot `prom-stack-migrated`.  
-5. Document results and Ansible automation workflow.  
+## ⚙️ Phase 3 — Ansible Migration Simulation
+**Purpose:** Demonstrate an automated migration workflow between legacy CentOS 7 and Rocky 9 using Ansible.
+
+**Workflow**
+1. Configured `ansible.cfg` and `inventory.ini` for both VMs.  
+2. Verified connectivity with `ansible -m ping all`.  
+3. Created playbook `migrate.yml` to simulate a config transfer:  
+   - Fetched `/etc/hosts` from CentOS 7  
+   - Deployed it to Rocky Linux 9 via delegation  
+4. Verified successful run (`changed = 1`) showing automated migration.  
+
+**Outcome**
+✅ Working automation demonstration reflecting CIQ-style modernization and cross-environment reproducibility.  
+
+**Artifacts Captured**
+- `ansible/playbooks/precheck.yml`  
+- `ansible/playbooks/migrate.yml`  
+- `docs/migration-summary.md`  
+
+---
+
+## 🪣 Next Steps
+1. Phase 4 – Security hardening + validation (SELinux + firewalld + rpm verify)  
+2. Phase 5 – Sysbench performance benchmark + validation playbook  
+3. Phase 6 – Terraform cloud portability stub + final README narrative  
 
 ---
 
 ## 🧾 Version Control
 **Current Milestone:**  
-> “Legacy CentOS 7 Prometheus stack running and validated (ports 9090 + 9100). Snapshot saved as `prom-stack-ready`. Next phase: Rocky Linux migration simulation.”
+> “Phase 3 Ansible migration simulation completed — demonstrating automated config transfer between CentOS 7 and Rocky 9, aligned with CIQ modernization principles.”
