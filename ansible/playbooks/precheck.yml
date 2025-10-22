@@ -1,0 +1,8 @@
+- hosts: all
+  gather_facts: yes
+  tasks:
+    - name: Ping all hosts
+      ansible.builtin.ping:
+    - name: Display OS distribution
+      ansible.builtin.debug:
+        var: ansible_distribution

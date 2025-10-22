@@ -1,0 +1,17 @@
+- hosts: rocky9
+  become: true
+  tasks:
+    - name: Copy sample config from legacy host
+      delegate_to: legacy-centos7
+      ansible.builtin.fetch:
+        src: /etc/hosts
+        dest: /tmp/legacy-configs/
+        flat: yes
+
+    - name: Deploy fetched config to Rocky target
+      ansible.builtin.copy:
+        src: /tmp/legacy-configs/hosts
+        dest: /etc/hosts
+        owner: root
+        group: root
+        mode: '0644'
